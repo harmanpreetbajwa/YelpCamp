@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampGrounds</title>
+    <title>Show Campground</title>
 </head>
 <body>
-    <h1>All CampGrounds</h1>
+    <p><b><%= campground.title %></b> - <%= campground.location %></p>
+    <a href="/campgrounds">Home</a><br>
     <a href="/campgrounds/new">Add a new campground</a>
-    <ul>
-    <% for (let camp of campgrounds) { %>
-        <li> <a href="/campgrounds/<%= camp.id %>"><%= camp.title %></a></li>
-        <% } %>
-    </ul>
 </body>
 </html>
