@@ -17,8 +17,13 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
     res.render('home');
-})
+});
+
+app.get('/campgrounds', async(req, res) => {
+    const allCampgrounds = await Campground.find({});
+    res.render('campgrounds/index', {campgrounds: allCampgrounds});
+});
 
 app.listen(8080, () => {
     console.log('Listening at port 8080.')
-})
+});
