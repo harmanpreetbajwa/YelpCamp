@@ -7,7 +7,8 @@
 </head>
 <body>
     <p><b><%= campground.title %></b> - <%= campground.location %></p>
-    <a href="/campgrounds">Home</a><br>
-    <a href="/campgrounds/new">Add a new campground</a>
+    <a href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a><br>
+    <a href="/campgrounds/new">Add a new campground</a><br>
+    <a href="/campgrounds">Home</a>
 </body>
 </html>
