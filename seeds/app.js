@@ -19,7 +19,10 @@ const seedDb = async() => {
         const randomCityIndex = Math.floor(Math.random() * 1000);
         const camp = new Campground({
             location: `${cities[randomCityIndex].city}, ${cities[randomCityIndex].state}`,
-            title: `${sample(descriptors)} ${sample(places)}`
+            title: `${sample(descriptors)} ${sample(places)}`,
+            image: `https://picsum.photos/400?random=${Math.random()}`,
+            description: 'Proin id elementum nunc. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed aliquam in orci at posuere. Etiam nec neque nunc. Pellentesque ac leo posuere, condimentum arcu et, tincidunt enim. Nullam vestibulum augue lectus, sit amet sodales quam interdum et. Mauris sagittis mauris id hendrerit vulputate. Etiam facilisis purus egestas, sagittis sem ut, pharetra velit. Maecenas feugiat ligula vitae ligula vestibulum, nec lacinia ex euismod. Fusce sed magna nisi. Proin quis erat in odio consequat aliquam. Aliquam massa ipsum, ullamcorper ac dapibus vel, cursus placerat arcu. Praesent scelerisque ornare lorem in ultrices. Nunc eu auctor ligula.',
+            price: (Math.random() * 300).toFixed(2)
         });
         await camp.save();
     }
