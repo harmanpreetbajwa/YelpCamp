@@ -1,5 +1,9 @@
 <% layout('layouts/boilerplate.ejs') %>
+<div class='container'>
 <p><b><%= campground.title %></b> - <%= campground.location %></p>
+<img src="<%= campground.image %>" alt="A campground">
+<p><%= campground.description %></p>
 <a href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a><br>
 <a href="/campgrounds/new">Add a new campground</a><br>
 <a href="/campgrounds">Home</a>
+</div>
