@@ -44,8 +44,6 @@ app.get('/campgrounds/:id', async(req, res) => {
 app.get('/campgrounds/:id/edit', async(req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
-    console.log('Before EDIT');
-    console.log(campground);
     res.render('campgrounds/edit', {campground});
 });
 
@@ -59,6 +57,8 @@ app.post('/campgrounds', async (req, res) => {
 app.put('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     const campData = req.body.campground;
+    console.log('Payload in request body: ');
+    console.log(campData);
     const updatedCamp = await Campground.findByIdAndUpdate(id, campData, {new: true});
     console.log('Updated Campground:');
     console.log(updatedCamp);
