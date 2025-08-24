@@ -9,8 +9,8 @@
 <% for (let campground of campgrounds) { %>
         <div class="card mb-2">
             <div class="row row-gap-3">
-                <div class="col-md-4">
-                    <img src="<%= campground.image %>" class="img-fluid" alt="A campground image">
+                <div class="col-md-4 py-1 px-3">
+                    <img src="<%= campground.image %>" class="img-fluid rounded" alt="A campground image">
                 </div>
 
                 <div class="col-md-8">
@@ -18,7 +18,13 @@
                         <h4 class="card-title"><%= campground.title %></h>
                         <h5  class="card-title text-muted"><%= campground.location %></h5>
                         <p class="card-text"><%= campground.description %></p>
-                        <a href="/campgrounds/<%= campground.id %>" class="btn btn-primary">Show Details</a>
+                        <div class="d-flex align-items-center" style="gap: 20px; margin-top: 20px;">
+                            <a href="/campgrounds/<%= campground.id %>" class="btn btn-primary">Show Details</a>
+                            <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post">
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </form>
+                            <a href="/campgrounds/<%= campground.id %>/edit" class="btn btn-primary">Edit</a>
+                        </div>
                     </div>
                 </div>
 
