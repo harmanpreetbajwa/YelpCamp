@@ -7,11 +7,9 @@ const Campground = require('./models/campground.js');
 const methodOverride = require('method-override');
 
 app = express();
-
 app.set('views', path.join(__dirname, 'views'));
-
-app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
+app.engine('ejs', ejsMate);
 
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'))
@@ -57,18 +55,13 @@ app.post('/campgrounds', async (req, res) => {
 app.put('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     const campData = req.body.campground;
-    console.log('Payload in request body: ');
-    console.log(campData);
     const updatedCamp = await Campground.findByIdAndUpdate(id, campData, {new: true});
-    console.log('Updated Campground:');
-    console.log(updatedCamp);
     res.redirect(`/campgrounds/${id}`);
 });
 
 app.delete('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
-    console.log('Campground DELETED !!');
     res.redirect(`/campgrounds`);
 });
 
