@@ -1,18 +1,21 @@
 <% layout('layouts/boilerplate.ejs') %>
 <div class="col-md-6 offset-3 border p-5 rounded shadow">
     <h2 class="text-muted text-center">Edit Campground</h2>
-    <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="post">
+    <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="post" class="needs-validation" novalidate>
         <div class="form-group">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control mb-2" name="campground[title]" id="title" value="<%= campground.title %>">
+            <input type="text" class="form-control mb-2" name="campground[title]" id="title" value="<%= campground.title %>" required>
+            <div class="valid-feedback">Looks good!</div>
         </div>
         <div class="form-group">
             <label for="location" class="form-label">Location</label>
-            <input type="text" class="form-control mb-2" name="campground[location]" id="location" value="<%= campground.location %>">
+            <input type="text" class="form-control mb-2" name="campground[location]" id="location" value="<%= campground.location %>" required>
+            <div class="valid-feedback">Looks good!</div>
         </div>
         <div class="form-group">
             <label for="image" class="form-label">Image</label>
-            <input type="text" class="form-control mb-2" name="campground[image]" id="image" value="<%= campground.image %>">
+            <input type="text" class="form-control mb-2" name="campground[image]" id="image" value="<%= campground.image %>" required>
+            <div class="valid-feedback">Looks good!</div>
         </div>
         <div>
             <label for="price-div" class="form-label">Price</label>
@@ -20,7 +23,8 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text">$</div>
                 </div>
-                <input type="number" step="any" class="form-control mb-2" name="campground[price]" id="price" value="<%= campground.price %>">
+                <input type="number" step="any" class="form-control mb-2" name="campground[price]" id="price" value="<%= campground.price %>" required>
+                <div class="valid-feedback">Looks good!</div>
             </div>
         </div>
         <div>
