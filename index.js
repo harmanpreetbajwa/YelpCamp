@@ -45,11 +45,16 @@ app.get('/campgrounds/:id/edit', async(req, res) => {
     res.render('campgrounds/edit', {campground});
 });
 
-app.post('/campgrounds', async (req, res) => {
-    const campData = req.body.campground;
-    const newcamp = new Campground(campData);
-    const { _id } = await newcamp.save();
-    res.redirect(`/campgrounds/${_id}`);
+app.post('/campgrounds', async (req, res, next) => {
+    try{
+        const campData = req.body.campground;
+        const newcamp = new Campground(campData);
+        const { _id } = await newcamp.save();
+        res.redirect(`/campgrounds/${_id}`);
+    }catch(e){
+        next(e);
+    }
+    
 });
 
 app.put('/campgrounds/:id', async (req, res) => {
@@ -68,6 +73,10 @@ app.delete('/campgrounds/:id', async (req, res) => {
 app.use((req, res) => {
     res.status(404).send('NOT FOUND!');
 });
+
+app.use((err, req, res, next)=> {
+    res.send(`Oops! Something went wrong.`)
+})
 
 app.listen(8080, () => {
     console.log('Listening at port 8080.')
