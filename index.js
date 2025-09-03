@@ -7,6 +7,7 @@ const Campground = require('./models/campground.js');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const catchAsync = require('./utils/catchAsync.js');
+const { campgroundSchema } = require('./schemas')
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -14,13 +15,24 @@ app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate);
 
 app.use(express.urlencoded({extended: true}));
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
+app.use(express.json());
 
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp').then( () => {
     console.log("Mongo listening at port 27017.");
 }).catch( () => {
     console.log('An issue encoutered while connecting to Mongo');
 });
+
+const validateCampground = (req, res, next) => {
+    const { error } = campgroundSchema.validate(req.body);
+    if (error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -47,8 +59,9 @@ app.get('/campgrounds/:id/edit', catchAsync(async(req, res) => {
     res.render('campgrounds/edit', {campground});
 }));
 
-app.post('/campgrounds', catchAsync(async (req, res, next) => {
-    if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
+app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
+    // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
+    
     const campData = req.body.campground;
     const newcamp = new Campground(campData);
     const { _id } = await newcamp.save();
@@ -56,7 +69,7 @@ app.post('/campgrounds', catchAsync(async (req, res, next) => {
 
 }));
 
-app.put('/campgrounds/:id', catchAsync(async (req, res) => {
+app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campData = req.body.campground;
     const updatedCamp = await Campground.findByIdAndUpdate(id, campData, {new: true});
