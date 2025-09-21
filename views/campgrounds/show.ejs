@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate.ejs') %>
 <div class="row">
-    <div class="col-6 offset-3">
+    <div class="col-6 offset-3 mb-3">
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top" alt="...">
             <div class="card-body">
@@ -16,5 +16,21 @@
                 <a class="card-link btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a><br>
             </div>
         </div>
+        <h2>Leave a review</h2>
+        <form action="/campgrounds/<%= campground._id %>/review" method="post" class="needs-validation" novalidate>
+            <div class="form-group mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <input type="range" max="5" min="1" class="form-control mb-2 form-range" name="review[rating]" id="rate" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="form-group">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea class="form-control" type="text" name="review[comment]" id="comm"></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="d-flex">
+                <button type="submit" class="btn btn-success mt-3">Submit</button>
+            </div>
+        </form>
     </div>
 </div>

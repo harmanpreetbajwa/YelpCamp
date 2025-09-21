@@ -3,6 +3,7 @@ const ejsMate = require('ejs-mate');
 const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground.js');
+const Review = require('./models/reviews.js');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const catchAsync = require('./utils/catchAsync.js');
@@ -48,7 +49,8 @@ app.get('/campgrounds/new', (req, res) => {
 
 app.get('/campgrounds/:id', catchAsync(async(req, res) => {
     const { id } = req.params; 
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate('reviews', 'rating');
+    console.log(campground)
     res.render('campgrounds/show', {campground});
 }));
 
@@ -56,6 +58,16 @@ app.get('/campgrounds/:id/edit', catchAsync(async(req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     res.render('campgrounds/edit', {campground});
+}));
+
+app.post('/campgrounds/:id/review', catchAsync(async(req, res) => {
+    const reviewData = req.body.review;
+    const newReview = new Review(reviewData);
+    const campground = await Campground.findById(id);
+    campground.reviews.push(newReview);
+    await newReview.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
