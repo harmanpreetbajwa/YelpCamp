@@ -71,7 +71,6 @@ app.get('/campgrounds/:id/edit', catchAsync(async(req, res) => {
 }));
 
 app.post('/campgrounds/:id/review', validateReview, catchAsync(async(req, res) => {
-    console.log(req.body)
     const reviewData = req.body.review;
     const newReview = new Review(reviewData);
     const campground = await Campground.findById(req.params.id);
