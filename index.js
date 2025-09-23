@@ -7,7 +7,7 @@ const Review = require('./models/reviews.js');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const catchAsync = require('./utils/catchAsync.js');
-const { campgroundSchema } = require('./schemas')
+const { campgroundSchema, reviewSchema } = require('./schemas');
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -25,8 +25,18 @@ mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp').then( () => {
 });
 
 const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
+    const { error } = campgroundSchema.validate(req.body || {});
     if (error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
+
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body || {});
+    if (error) {
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);
     } else {
@@ -49,7 +59,7 @@ app.get('/campgrounds/new', (req, res) => {
 
 app.get('/campgrounds/:id', catchAsync(async(req, res) => {
     const { id } = req.params; 
-    const campground = await Campground.findById(id).populate('reviews', 'rating');
+    const campground = await Campground.findById(id).populate('reviews');
     console.log(campground)
     res.render('campgrounds/show', {campground});
 }));
@@ -60,10 +70,11 @@ app.get('/campgrounds/:id/edit', catchAsync(async(req, res) => {
     res.render('campgrounds/edit', {campground});
 }));
 
-app.post('/campgrounds/:id/review', catchAsync(async(req, res) => {
+app.post('/campgrounds/:id/review', validateReview, catchAsync(async(req, res) => {
+    console.log(req.body)
     const reviewData = req.body.review;
     const newReview = new Review(reviewData);
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(req.params.id);
     campground.reviews.push(newReview);
     await newReview.save();
     await campground.save();
