@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const catchAsync = require('./utils/catchAsync.js');
 const { campgroundSchema, reviewSchema } = require('./schemas');
+const { any } = require('joi');
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -60,7 +61,6 @@ app.get('/campgrounds/new', (req, res) => {
 app.get('/campgrounds/:id', catchAsync(async(req, res) => {
     const { id } = req.params; 
     const campground = await Campground.findById(id).populate('reviews');
-    console.log(campground)
     res.render('campgrounds/show', {campground});
 }));
 
@@ -78,6 +78,13 @@ app.post('/campgrounds/:id/review', validateReview, catchAsync(async(req, res) =
     await newReview.save();
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
+}));
+
+app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async(req, res) => {
+    const {id, reviewId} = req.params;
+    await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/campgrounds/${id}`);
 }));
 
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
