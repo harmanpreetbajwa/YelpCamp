@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate.ejs') %>
 <div class="row">
-    <div class="col-6 offset-3 mb-3">
+    <div class="col-6 mb-3">
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top" alt="...">
             <div class="card-body">
@@ -16,8 +16,10 @@
                 <a class="card-link btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a><br>
             </div>
         </div>
+    </div>
+    <div class="col-6 mb-3">
         <h2>Leave a review</h2>
-        <form action="/campgrounds/<%= campground._id %>/review" method="post" class="needs-validation" novalidate>
+        <form action="/campgrounds/<%= campground._id %>/review" method="post" class="needs-validation mb-3" novalidate>
             <div class="form-group mb-3">
                 <label for="rating" class="form-label">Rating</label>
                 <input type="range" max="5" min="1" class="form-control mb-2 form-range" name="review[rating]" id="rate">   
@@ -31,13 +33,13 @@
                 <button type="submit" class="btn btn-success mt-3">Submit</button>
             </div>
         </form>
-        <h2>Reviews</h2>
-        <ul>
         <%for (review of campground.reviews){ %>
-            <li>
-            <p>Rating: <%= review.rating%>, Comment: <%= review.body ? review.body : "No Comment." %></p>
-            </li>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Rating: <%= review.rating %></h5>
+                    <p class="card-text">Review: <i><%= review.body ? review.body : "No Comment."%></i></p>
+                </div>
+            </div>
         <%}%>
-        </ul>
     </div>
 </div>
