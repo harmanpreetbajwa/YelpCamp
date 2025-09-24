@@ -8,7 +8,6 @@ const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const catchAsync = require('./utils/catchAsync.js');
 const { campgroundSchema, reviewSchema } = require('./schemas');
-const { any } = require('joi');
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
