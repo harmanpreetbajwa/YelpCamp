@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const campgroundRouter = require('./routes/campgrounds.js');
+const reviewRouter = require('./routes/reviews.js');
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -15,6 +16,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.json());
 app.use('/campgrounds', campgroundRouter);
+app.use('/campgrounds/:id/reviews', reviewRouter);
 
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp').then( () => {
     console.log("Mongo listening at port 27017.");
