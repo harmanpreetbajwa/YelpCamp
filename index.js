@@ -7,6 +7,7 @@ const ExpressError = require('./utils/ExpressError.js');
 const campgroundRouter = require('./routes/campgrounds.js');
 const reviewRouter = require('./routes/reviews.js');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -16,9 +17,6 @@ app.engine('ejs', ejsMate);
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/campgrounds', campgroundRouter);
-app.use('/campgrounds/:id/reviews', reviewRouter);
 
 const sessionConfig = {
     secret: 'thisisasecret',
@@ -30,7 +28,19 @@ const sessionConfig = {
     }
 }
 
-app.use(session(sessionConfig))
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    next();
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/campgrounds', campgroundRouter);
+app.use('/campgrounds/:id/reviews', reviewRouter);
+
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp').then( () => {
     console.log("Mongo listening at port 27017.");

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const flash = require('connect-flash');
 const Campground = require('../models/campground.js');
 
 const catchAsync = require('../utils/catchAsync.js');
@@ -44,6 +45,7 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
     const campData = req.body.campground;
     const newcamp = new Campground(campData);
     const { _id } = await newcamp.save();
+    req.flash('success', 'Successfully created a campground.');
     res.redirect(`/campgrounds/${_id}`);
 
 }));
