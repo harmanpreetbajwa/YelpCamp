@@ -6,8 +6,12 @@ const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError.js');
 const campgroundRouter = require('./routes/campgrounds.js');
 const reviewRouter = require('./routes/reviews.js');
+const userRouter = require('./routes/user.js');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
 
 app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +35,13 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -40,6 +51,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/campgrounds', campgroundRouter);
 app.use('/campgrounds/:id/reviews', reviewRouter);
+app.use('/', userRouter);
 
 
 
@@ -61,8 +73,8 @@ app.use((err, req, res, next)=> {
     const {statusCode = 500} = err;
 
     if (err){
-        req.flash('error', 'Cannot find that campground.');
-        return res.redirect(`/campgrounds`);
+        req.flash('error', err.message);
+        // return res.redirect(`/campgrounds`);
     }
     if (!err.message) err.message = 'OOPS! Something went wrong.';
     res.status(statusCode).render('error', { err });
