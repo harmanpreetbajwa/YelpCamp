@@ -20,10 +20,6 @@
                         <p class="card-text"><%= campground.description %></p>
                         <div class="d-flex align-items-center" style="gap: 20px; margin-top: 20px;">
                             <a href="/campgrounds/<%= campground.id %>" class="btn btn-primary">Show Details</a>
-                            <a href="/campgrounds/<%= campground.id %>/edit" class="btn btn-warning">Edit</a>
-                            <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
                         </div>
                     </div>
                 </div>

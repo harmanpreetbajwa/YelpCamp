@@ -9,12 +9,17 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= campground.location %></li>
+                <li class="list-group-item">Submitted by <%= campground.author.username %></li>
                 <li class="list-group-item">$<%= campground.price %>/night</li>
             </ul>
-            <div class="card-body d-flex align-items-center" style="gap: 10px; margin-top: 20px;">
-                <a class="card-link btn btn-warning" href="/campgrounds">Back to all Campgrounds</a>
-                <a class="card-link btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a><br>
-            </div>
+            <% if (currentUser && campground.author._id.equals(currentUser._id)) { %>
+                <div class="card-body d-flex align-items-center" style="gap: 10px; margin-top: 20px;">
+                    <a class="card-link btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a><br>
+                    <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post">
+                        <button type="submit" class="card-link btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            <% } %>
         </div>
     </div>
     <div class="col-6 mb-3">
