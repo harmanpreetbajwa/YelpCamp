@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Review = require('./reviews.js');
-const { type } = require('os');
 const Schema = mongoose.Schema;
 
 const CampgroundSchema = new Schema(
