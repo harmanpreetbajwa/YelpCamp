@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Review = require('./reviews.js');
+const { type } = require('os');
 const Schema = mongoose.Schema;
 
 const CampgroundSchema = new Schema(
@@ -18,6 +19,10 @@ const CampgroundSchema = new Schema(
         },
         location: {
             type: String
+        },
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         },
         reviews: [
             {
