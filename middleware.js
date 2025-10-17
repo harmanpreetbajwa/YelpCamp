@@ -1,10 +1,13 @@
 const Campground = require('./models/campground.js');
+const Review = require('./models/reviews.js');
 const { campgroundSchema, reviewSchema} = require('./schemas');
 const ExpressError = require('./utils/ExpressError.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
+    const { id } = req.params;
     if (!req.isAuthenticated()){
-        req.session.returnTo = req.originalUrl;
+        // req.session.returnTo = req.originalUrl;
+        req.session.returnTo = (req.query._method == 'delete' ? `/campgrounds/${id}` : req.originalUrl);
         req.flash('error', 'You must be signed-in.');
         return res.redirect('/login');
     }
@@ -32,6 +35,16 @@ module.exports.isAuthor = async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground.author.equals(res.locals.currentUser._id)){
+        req.flash('error', "You don't have permission to do this.");
+        return res.redirect(`/campgrounds/${id}`);    
+    }
+    next();
+}
+
+module.exports.isReviewAuthor = async (req, res, next) => {
+    const { id, reviewId } = req.params;
+    const review = await Review.findById(reviewId);
+    if (!review.author.equals(res.locals.currentUser._id)){
         req.flash('error', "You don't have permission to do this.");
         return res.redirect(`/campgrounds/${id}`);    
     }
