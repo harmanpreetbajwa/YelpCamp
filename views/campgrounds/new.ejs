@@ -12,12 +12,9 @@
             <input type="text" class="form-control mb-2" name="campground[location]" id="location" required>
             <div class="valid-feedback">Looks good!</div>
         </div>
-        <div class="form-file custom-file">
-            <input type="file" class="form-file-input" id="image" name="image" multiple>
-            <label class="form-file-label" for="image">
-                <span class="form-file-text custom-file-label">Choose image(s)...</span>
-                <span class="form-file-button">Browse</span>
-            </label>
+        <div class="input-group mb-3">
+            <input class="form-control" type="file" id="image" name="image" multiple>
+        </div>
         <div>
             <label for="price">Price</label>
             <div class="input-group mb-2" name="price-div">
