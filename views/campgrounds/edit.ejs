@@ -25,9 +25,18 @@
                 <div class="valid-feedback">Looks good!</div>
             </div>
         </div>
-        <div>
+        <div class="mb-3">
             <label class="form-label" for="description">Description</label>
             <textarea class="form-control" type="text" id="description" name="campground[description]"><%= campground.description%></textarea>
+        </div>
+        <div class="mb-3">
+            <% campground.images.forEach(function(image, i){ %>
+                <img src="<%= image.url %>" class="img-thumbnail" alt="">
+                <div class="form-check-inline">
+                    <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=image.filename%>">
+                </div>
+                <label for="image-<%=i%>">Delete?</label>
+            <% }) %>
         </div>
         <div class="d-flex justify-content-between align-items-center">
             <a href="/campgrounds/<%= campground._id %>" class="">Back to Campground</a>
