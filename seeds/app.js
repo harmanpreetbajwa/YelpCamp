@@ -25,12 +25,8 @@ const seedDb = async() => {
             price: (Math.random() * 300).toFixed(2),
             images: [
                     {
-                        url: 'https://res.cloudinary.com/do9ijldl2/image/upload/v1761423888/YelpCamp/r2mqlrlouksdm3qvqw3c.jpg',
-                        filename: 'YelpCamp/r2mqlrlouksdm3qvqw3c',
-                    },
-                    {
-                        url: 'https://res.cloudinary.com/do9ijldl2/image/upload/v1761423888/YelpCamp/khvgiemyiyi4lizivjfk.jpg',
-                        filename: 'YelpCamp/khvgiemyiyi4lizivjfk',
+                        url: 'https://res.cloudinary.com/do9ijldl2/image/upload/v1761440138/YelpCamp/zzqs3i8jygale80p2jqk.jpg',
+                        filename: 'YelpCamp/zzqs3i8jygale80p2jqk',
                     }
                     ],
         });
