@@ -5,7 +5,9 @@
         <div class="card mb-2">
             <div class="row row-gap-3">
                 <div class="col-md-4 py-1 px-3">
-                    <img src="<%= campground.images[0].url %>" class="img-fluid rounded" alt="A campground image">
+                    <% if (campground.images.length > 0){ %>
+                        <img src="<%= campground.images[0].url %>" class="img-fluid rounded" alt="A campground image">
+                    <% } %>
                 </div>
 
                 <div class="col-md-8">
